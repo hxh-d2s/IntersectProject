@@ -1,3 +1,6 @@
-﻿  IntersectProject.cpp
-D:\study\软件工程\第一次个人\IntersectProject\src\IntersectProject\IntersectProject\IntersectProject.cpp(86,15): warning C4101: “j”: 未引用的局部变量
+﻿  Circle.cpp
+  IntersectProject.cpp
+  Line.cpp
+  正在编译...
+  正在生成代码...
   IntersectProject.vcxproj -> D:\study\软件工程\第一次个人\IntersectProject\src\IntersectProject\Debug\IntersectProject.exe

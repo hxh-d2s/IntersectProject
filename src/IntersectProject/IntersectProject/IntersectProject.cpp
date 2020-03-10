@@ -1,80 +1,8 @@
 ﻿// ConsoleApplication1.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
 //
 
-#include <iostream>
-#include <map>
-#include <list>
-#include <string>
-#include <math.h>
+#include "Intersect.h"
 using namespace std;
-
-class Line
-{
-private:
-    map<double, double> intersections;    //存储一条直线与其他直线所有的交点
-    map<double, double>::iterator sec_iter;
-
-public:
-    double a;
-    double b;
-    double c;
-
-    Line(double a, double b, double c) {
-        this->a = a;
-        this->b = b;
-        this->c = c;
-    }
-    int addIntersection(double x, double y) {
-        if (b == 0)         //当直线与x轴垂直时，每一个y轴坐标标志着唯一的点
-            sec_iter = intersections.find(y);
-        else
-            sec_iter = intersections.find(x);
-
-        if (sec_iter != intersections.end()) {
-            return 0;
-        }
-        else {
-            intersections.insert(pair<double, double>(x, y));
-            return 1;
-        }
-    }
-    /*bool isPara(Line line2) {
-        if (a * line2.b == b * line2.a) {
-            return true;
-        }
-        return false;
-    }*/
-};
-
-class Circle
-{
-private:
-    map<double, double> intersections;    //存储一条直线与其他直线所有的交点
-    map<double, double>::iterator sec_iter;
-
-public:
-    double x;
-    double y;
-    double r;
-
-    Circle(double x, double y, double r) {
-        this->x = x;
-        this->y = y;
-        this->r = r;
-    }
-
-    int addIntersection(double x2, double y2) {
-        double m = atan2(y2 - y, x2 - x);
-        sec_iter = intersections.find(m);
-        if (sec_iter != intersections.end()) {
-            return 0;
-        }
-        else{
-            intersections.insert(pair<double, double>(m, 1));
-            return 1;
-        }
-    }
-};
 
 int main()
 {
@@ -83,7 +11,7 @@ int main()
     list<Circle> Circlelist;
     list<Circle>::iterator circle_iter;
 
-    int n, i, j, count;
+    int n, i, count;
     double x1, y1, x2, y2, r;
     double a, b, c;
     string type;
@@ -121,7 +49,7 @@ int main()
                 x2 = circle_iter->x;
                 y2 = circle_iter->y;
                 double r = circle_iter->r;
-                double d = abs((a * x2 + b * y2 + c) / sqrt(a * a + b * b));
+                double d = fabs((a * x2 + b * y2 + c) / sqrt(a * a + b * b));
                 if (d > r)
                     continue;
                 else {
@@ -151,13 +79,13 @@ int main()
                 a = line_iter->a;
                 b = line_iter->b;
                 c = line_iter->c;
-                double d = abs((a * x1 + b * y1 + c) / sqrt(a * a + b * b));
+                double d = fabs((a * x1 + b * y1 + c) / sqrt(a * a + b * b));
                 if (d > r)
                     continue;
                 else if (d == r) {
                     double m = -a * a - b * b;
                     double x = ((a * y1 - b * x1) * b + c * a) / m;
-                    double y = (c * b - (a * y2 - b * x2) * a) / m;
+                    double y = (c * b - (a * y1 - b * x1) * a) / m;
                     int sum = line_iter->addIntersection(x, y) + circle.addIntersection(x, y);
                     if (sum == 2) {
                         count++;
@@ -186,20 +114,20 @@ int main()
                 y2 = circle_iter->y;
                 double r2 = circle_iter->r;
                 double d = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-                if (d > r + r2 ||  d < abs(r - r2))
+                if (d > r + r2 ||  d < fabs(r - r2))
                     continue;
                 else {
                     double t = acos((d * d + r * r - r2 * r2) / (2 * d * r));
                     double m = atan2(y2 - y1, x2 - x1);
-                    double x = x1 + r * round(cos(m + t));
-                    double y = y1 + r * round(sin(m + t));
+                    double x = x1 + r * round(cos(m + t)*10000)/10000;
+                    double y = y1 + r * round(sin(m + t)*10000)/10000;
                     int sum = circle_iter->addIntersection(x, y) + circle.addIntersection(x, y);
                     if (sum == 2) {
                         count++;
                         //cout << x << " " << y << endl;
                     }
-                    x = x1 + r * round(cos(m - t));
-                    y = y1 + r * round(sin(m - t));
+                    x = x1 + r * round(cos(m - t)*10000)/10000;
+                    y = y1 + r * round(sin(m - t)*10000)/10000;
                     sum = circle_iter->addIntersection(x, y) + circle.addIntersection(x, y);
                     if (sum == 2) {
                         count++;
